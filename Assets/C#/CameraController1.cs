@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
@@ -33,7 +33,7 @@ public class CameraController : MonoBehaviour
 
     private void HandleMouseInput()
     {
-        // Êó±êÓÒ¼üĞı×ª
+        // é¼ æ ‡å³é”®æ—‹è½¬
         if (Input.GetMouseButton(1))
         {
             float mouseX = Input.GetAxis("Mouse X") * rotationSpeed * Time.deltaTime;
@@ -51,17 +51,17 @@ public class CameraController : MonoBehaviour
     {
         Vector3 moveDirection = Vector3.zero;
 
-        // »ù´¡ÒÆ¶¯·½Ïò£¨WASD£©
+        // åŸºç¡€ç§»åŠ¨æ–¹å‘ï¼ˆWASDï¼‰
         if (Input.GetKey(KeyCode.W)) moveDirection += transform.forward;
         if (Input.GetKey(KeyCode.S)) moveDirection -= transform.forward;
         if (Input.GetKey(KeyCode.D)) moveDirection += transform.right;
         if (Input.GetKey(KeyCode.A)) moveDirection -= transform.right;
 
-        // Éı½µ¿ØÖÆ£¨Q/E£©
+        // å‡é™æ§åˆ¶ï¼ˆQ/Eï¼‰
         if (Input.GetKey(KeyCode.E)) moveDirection += Vector3.up;
         if (Input.GetKey(KeyCode.Q)) moveDirection += Vector3.down;
 
-        // Ó¦ÓÃÒÆ¶¯
+        // åº”ç”¨ç§»åŠ¨
         if (moveDirection != Vector3.zero)
         {
             _currentMoveSpeed = Mathf.Lerp(_currentMoveSpeed, moveSpeed, acceleration * Time.deltaTime);
@@ -71,7 +71,7 @@ public class CameraController : MonoBehaviour
 
     private void HandleScrollInput()
     {
-        // ¹öÂÖµ÷ÕûËÙ¶È
+        // æ»šè½®è°ƒæ•´é€Ÿåº¦
         float scroll = Input.GetAxis("Mouse ScrollWheel");
         if (scroll != 0)
         {

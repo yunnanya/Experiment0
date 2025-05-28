@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
@@ -37,14 +37,14 @@ public class PlayerController : MonoBehaviour
 
         float currentSpeed = input.magnitude >= runThreshold ? runSpeed : walkSpeed;
 
-        // ĞŞÕı£ºÈ¥³ıÓÒ·½ÏòµÄ´¹Ö±·ÖÁ¿
+        // ä¿®æ­£ï¼šå»é™¤å³æ–¹å‘çš„å‚ç›´åˆ†é‡
         Vector3 forward = cameraTransform.forward;
         forward.y = 0;
         forward.Normalize();
 
         Vector3 right = cameraTransform.right;
-        right.y = 0; // ĞÂÔö£ºÈ¥³ıYÖá·ÖÁ¿
-        right.Normalize(); // ĞÂÔö£º¹éÒ»»¯
+        right.y = 0; // æ–°å¢ï¼šå»é™¤Yè½´åˆ†é‡
+        right.Normalize(); // æ–°å¢ï¼šå½’ä¸€åŒ–
 
         Vector3 direction = forward * input.y + right * input.x;
         Vector3 movement = direction * currentSpeed * Time.fixedDeltaTime;

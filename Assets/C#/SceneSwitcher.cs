@@ -1,22 +1,22 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class SceneTransition : MonoBehaviour
 {
-    [SerializeField] private string targetScene = "MiGong1"; // Ä¿±ê³¡¾°Ãû³Æ
-    [SerializeField] private string playerTag = "Player";     // Íæ¼Ò±êÇ©
+    [SerializeField] private string targetScene = "MiGong1"; // ç›®æ ‡åœºæ™¯åç§°
+    [SerializeField] private string playerTag = "Player";     // ç©å®¶æ ‡ç­¾
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag(playerTag))
         {
             SceneManager.LoadScene(targetScene);
-            // ÈçĞèÒì²½¼ÓÔØ¿ÉÌæ»»Îª£º
+            // å¦‚éœ€å¼‚æ­¥åŠ è½½å¯æ›¿æ¢ä¸ºï¼š
             // StartCoroutine(LoadSceneAsync());
         }
     }
 
-    // ¿ÉÑ¡Òì²½¼ÓÔØ·½·¨
+    // å¯é€‰å¼‚æ­¥åŠ è½½æ–¹æ³•
     /*
     private IEnumerator LoadSceneAsync()
     {

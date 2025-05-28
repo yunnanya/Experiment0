@@ -1,8 +1,8 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class EndGameTrigger : MonoBehaviour
 {
-    [SerializeField] private string playerTag = "Player"; // Íæ¼Ò±êÇ©
+    [SerializeField] private string playerTag = "Player"; // ç©å®¶æ ‡ç­¾
 
     private void OnTriggerEnter(Collider other)
     {
@@ -15,9 +15,9 @@ public class EndGameTrigger : MonoBehaviour
     private void EndGame()
     {
 #if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false; // ±à¼­Æ÷Ä£Ê½ÏÂÍ£Ö¹ÔËĞĞ
+        UnityEditor.EditorApplication.isPlaying = false; // ç¼–è¾‘å™¨æ¨¡å¼ä¸‹åœæ­¢è¿è¡Œ
 #else
-            Application.Quit(); // ¹¹½¨ºóÍË³öÓÎÏ·
+            Application.Quit(); // æ„å»ºåé€€å‡ºæ¸¸æˆ
 #endif
     }
 }

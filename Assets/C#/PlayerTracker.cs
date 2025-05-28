@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.IO;
 using System.Text;
 using UnityEngine;
@@ -9,7 +9,7 @@ public class PlayerTracker : MonoBehaviour
     public static PlayerTracker Instance => _instance ??= FindObjectOfType<PlayerTracker>();
 
     [Header("VR Player Settings")]
-    [SerializeField] private Transform vrPlayer;  // ÊÖ¶¯ÍÏ×§VRÉãÏñ»ú/¿ØÖÆÆ÷µ½´Ë×Ö¶Î
+    [SerializeField] private Transform vrPlayer;  // æ‰‹åŠ¨æ‹–æ‹½VRæ‘„åƒæœº/æ§åˆ¶å™¨åˆ°æ­¤å­—æ®µ
     [SerializeField] private string playerID = "VR_Player_01";
 
     [Header("Recording Settings")]
@@ -48,7 +48,7 @@ public class PlayerTracker : MonoBehaviour
 
     private void Update()
     {
-        RecordPosition(); // Ã¿Ö¡Ö±½Ó¼ÇÂ¼
+        RecordPosition(); // æ¯å¸§ç›´æ¥è®°å½•
     }
 
     private void RecordPosition()
@@ -79,7 +79,7 @@ public class PlayerTracker : MonoBehaviour
         Debug.Log("Player tracker resources released");
     }
 
-    // ±à¼­Æ÷À©Õ¹£º×Ô¶¯²éÕÒVRÍæ¼Ò¶ÔÏó
+    // ç¼–è¾‘å™¨æ‰©å±•ï¼šè‡ªåŠ¨æŸ¥æ‰¾VRç©å®¶å¯¹è±¡
 #if UNITY_EDITOR
     private void OnValidate()
     {

@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,9 +23,9 @@ public class ScoreManager : MonoBehaviour
     public void AddScore(int points)
     {
         totalScore += points;
-        totalScoreText.text = $"×Ü·Ö: {totalScore}";
+        totalScoreText.text = $"æ€»åˆ†: {totalScore}";
 
-        bonusText.text = $"+{points}·Ö";
+        bonusText.text = $"+{points}åˆ†";
         StartCoroutine(ShowBonusText());
 
         audioSource.PlayOneShot(bonusSound);

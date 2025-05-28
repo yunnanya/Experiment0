@@ -1,13 +1,13 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class CorrectPathTrigger : MonoBehaviour
 {
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player")) // È·±£Íæ¼ÒÓĞ"Player"±êÇ©
+        if (other.CompareTag("Player")) // ç¡®ä¿ç©å®¶æœ‰"Player"æ ‡ç­¾
         {
             ScoreManager.Instance.AddScore(10);
-            // ¿ÉÑ¡£º½ûÓÃ´¥·¢Æ÷·ÀÖ¹ÖØ¸´´¥·¢
+            // å¯é€‰ï¼šç¦ç”¨è§¦å‘å™¨é˜²æ­¢é‡å¤è§¦å‘
             GetComponent<BoxCollider>().enabled = false;
         }
     }

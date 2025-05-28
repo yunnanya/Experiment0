@@ -1,15 +1,15 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class AreaSoundController : MonoBehaviour
 {
-    [Header("ÒôÆµÅäÖÃ")]
-    public AudioSource targetAudioSource; // Íâ²¿ÒôÆµ×é¼ş
+    [Header("éŸ³é¢‘é…ç½®")]
+    public AudioSource targetAudioSource; // å¤–éƒ¨éŸ³é¢‘ç»„ä»¶
 
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player") && targetAudioSource != null)
         {
-            targetAudioSource.Play(); // ²¥·ÅÍâ²¿ÒôÆµ
+            targetAudioSource.Play(); // æ’­æ”¾å¤–éƒ¨éŸ³é¢‘
         }
     }
 
@@ -17,7 +17,7 @@ public class AreaSoundController : MonoBehaviour
     {
         if (other.CompareTag("Player") && targetAudioSource != null)
         {
-            targetAudioSource.Stop(); // Í£Ö¹Íâ²¿ÒôÆµ
+            targetAudioSource.Stop(); // åœæ­¢å¤–éƒ¨éŸ³é¢‘
         }
     }
 }
