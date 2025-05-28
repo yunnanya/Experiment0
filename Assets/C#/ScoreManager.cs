@@ -16,7 +16,10 @@ public class ScoreManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
+
+        //添加判空保护
         audioSource = GetComponent<AudioSource>();
+        //添加判空保护
         bonusText.gameObject.SetActive(false);
     }
 

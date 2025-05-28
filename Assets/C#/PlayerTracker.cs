@@ -36,6 +36,12 @@ public class PlayerTracker : MonoBehaviour
     private void InitializeRecorder()
     {
         string directory = Path.Combine(Application.dataPath, "../PlayerTraces");
+
+        if (Directory.Exists(directory))
+        { 
+            //条件保护 若目录已经存在，相应的处理
+        }
+
         Directory.CreateDirectory(directory);
 
         string timestamp = DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss");
@@ -46,14 +52,20 @@ public class PlayerTracker : MonoBehaviour
         Debug.Log($"Player trace file created: {_filePath}");
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
+        //这里要用FixedUpdate，确保记录间隔大体相同
+        //若在Update中记录，则记录间隔受性能影响
         RecordPosition(); // 每帧直接记录
     }
 
     private void RecordPosition()
     {
-        if (vrPlayer == null) return;
+        if (vrPlayer == null)
+        {
+            Debug.LogError("VR Player not found!");
+            return;
+        }
 
         Vector3 position = vrPlayer.position;
         _buffer.Append(DateTime.Now.ToString("yyyy-MM-dd_HH:mm:ss.ffff"))
@@ -66,6 +78,9 @@ public class PlayerTracker : MonoBehaviour
               .Append(",")
               .Append(position.z.ToString("F3"))
               .Append("\n");
+
+        //建议用下面这种
+        //_buffer.Append($"{DateTime.Now.ToString("yyyy-MM-dd_HH:mm:ss.ffff")},{playerID},{position.x.ToString("F3")},{position.y.ToString("F3")},{position.z.ToString("F3")}\n");
 
         _playerWriter.Write(_buffer.ToString());
         _buffer.Clear();
@@ -86,7 +101,10 @@ public class PlayerTracker : MonoBehaviour
         if (vrPlayer == null)
         {
             GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
-            if (playerObj != null) vrPlayer = playerObj.transform;
+            if (playerObj != null)
+            {
+                vrPlayer = playerObj.transform;
+            }
         }
     }
 #endif

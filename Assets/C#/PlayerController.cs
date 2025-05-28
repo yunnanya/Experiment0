@@ -12,8 +12,9 @@ public class PlayerController : MonoBehaviour
     private Transform cameraTransform;
     private Vector2 lastInput;
 
-    private void Start()
+    private void Awake()
     {
+        //初始化相关逻辑尽量还是放在Awak里面
         cameraTransform = Camera.main.transform;
     }
 
@@ -33,7 +34,10 @@ public class PlayerController : MonoBehaviour
             input = input.normalized * ((input.magnitude - deadZone) / (1 - deadZone));
         }
 
-        if (input == Vector2.zero) return;
+        if (input == Vector2.zero)
+        {
+            return;
+        }
 
         float currentSpeed = input.magnitude >= runThreshold ? runSpeed : walkSpeed;
 
