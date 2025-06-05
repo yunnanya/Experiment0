@@ -10,11 +10,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField][Range(0.5f, 1f)] private float runThreshold = 0.95f;
 
     private Transform cameraTransform;
-    private Vector2 lastInput;
 
     private void Awake()
     {
-        //初始化相关逻辑尽量还是放在Awak里面
         cameraTransform = Camera.main.transform;
     }
 
@@ -25,6 +23,7 @@ public class PlayerController : MonoBehaviour
 
         Vector2 input = gamepad.leftStick.ReadValue();
 
+        // 应用死区处理
         if (input.magnitude < deadZone)
         {
             input = Vector2.zero;
@@ -34,24 +33,19 @@ public class PlayerController : MonoBehaviour
             input = input.normalized * ((input.magnitude - deadZone) / (1 - deadZone));
         }
 
-        if (input == Vector2.zero)
-        {
-            return;
-        }
+        // 仅当摇杆向前推（Y轴正方向）时移动
+        if (input.y <= 0) return;
 
-        float currentSpeed = input.magnitude >= runThreshold ? runSpeed : walkSpeed;
+        // 根据Y轴输入值判断是否奔跑
+        float currentSpeed = input.y >= runThreshold ? runSpeed : walkSpeed;
 
-        // 修正：去除右方向的垂直分量
+        // 获取相机正前方向量（水平方向）
         Vector3 forward = cameraTransform.forward;
         forward.y = 0;
         forward.Normalize();
 
-        Vector3 right = cameraTransform.right;
-        right.y = 0; // 新增：去除Y轴分量
-        right.Normalize(); // 新增：归一化
-
-        Vector3 direction = forward * input.y + right * input.x;
-        Vector3 movement = direction * currentSpeed * Time.fixedDeltaTime;
+        // 仅使用相机前方方向移动
+        Vector3 movement = forward * (input.y * currentSpeed * Time.fixedDeltaTime);
         rb.MovePosition(rb.position + movement);
     }
 }

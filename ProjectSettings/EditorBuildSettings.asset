@@ -5,12 +5,18 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/PeiXun.unity
     guid: 0c5975e35f19dde45b93e5c1bd297935
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/MiGong1.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 0
+    path: Assets/Scenes/MiGong2.unity
+    guid: 73f64e6f73ecc254799c0c65a17054ec
+  - enabled: 1
+    path: Assets/Scenes/MiGong3.unity
+    guid: b8d880ac85409b24b8c05e23e497531e
   m_configObjects:
     Unity.XR.OpenVR.Settings: {fileID: 11400000, guid: 4644bb4ac435a2144b2af74374daf2f5, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: e6370d4e4975dbe4d8d7d9c70ce3bf0f, type: 2}

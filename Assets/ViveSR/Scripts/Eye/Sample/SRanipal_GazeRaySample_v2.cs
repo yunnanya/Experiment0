@@ -26,6 +26,10 @@ namespace ViveSR.anipal.Eye
         private StreamWriter datasetFileWriter;
         private const string TimeFormat = "yyyy-MM-dd_HH:mm:ss.ffff";
 
+        // 用于存储最新眼动数据的缓存
+        private Vector3 latestGazeDirection;
+        private bool hasNewGazeData = false;
+
         public event Action<Vector3> CollisionPointEvent;
 
         void Start()
@@ -37,7 +41,7 @@ namespace ViveSR.anipal.Eye
             }
             Assert.IsNotNull(GazeRayRenderer);
 
-            // 文件路径与PlayerTracker一致
+            // 文件路径
             string directory = Path.Combine(Application.dataPath, "../PlayerTraces");
             Directory.CreateDirectory(directory);
 
@@ -49,7 +53,7 @@ namespace ViveSR.anipal.Eye
                 AutoFlush = true
             };
 
-            // CSV表头
+            // 扩展CSV表头：添加玩家位置和旋转
             datasetFileWriter.WriteLine(
                 "TimeStamp," +
                 "碰撞物体名称," +
@@ -57,7 +61,9 @@ namespace ViveSR.anipal.Eye
                 "左瞳孔直径(mm),右瞳孔直径(mm)," +
                 "左瞳孔X,左瞳孔Y," +
                 "右瞳孔X,右瞳孔Y," +
-                "左眼睁眼度,右眼睁眼度"
+                "左眼睁眼度,右眼睁眼度," +
+                "玩家位置X,玩家位置Y,玩家位置Z," +
+                "玩家旋转X,玩家旋转Y,玩家旋转Z,玩家旋转W"
             );
 
             Debug.Log($"眼动数据文件已创建: {datasetFilePath}");
@@ -70,7 +76,20 @@ namespace ViveSR.anipal.Eye
                 return;
 
             UpdateEyeCallback();
-            ProcessGazeData();
+            UpdateGazeData();
+        }
+
+        void FixedUpdate()
+        {
+            if (!hasNewGazeData) return;
+
+            // 获取玩家位置和旋转（使用主摄像机）
+            Vector3 playerPosition = Camera.main.transform.position;
+            Quaternion playerRotation = Camera.main.transform.rotation;
+
+            // 处理并记录眼动数据
+            ProcessGazeData(playerPosition, playerRotation);
+            hasNewGazeData = false;
         }
 
         private void UpdateEyeCallback()
@@ -92,13 +111,25 @@ namespace ViveSR.anipal.Eye
             }
         }
 
-        private void ProcessGazeData()
+        private void UpdateGazeData()
         {
             if (!GetGazeRay(out Vector3 origin, out Vector3 direction)) return;
 
+            // 更新射线可视化
             UpdateRayVisualization(direction);
+
+            // 获取眼动指标
             GetEyeMetrics();
-            CheckCollision(direction);
+
+            // 缓存最新数据用于FixedUpdate处理
+            latestGazeDirection = direction;
+            hasNewGazeData = true;
+        }
+
+        private void ProcessGazeData(Vector3 playerPosition, Quaternion playerRotation)
+        {
+            // 使用缓存的最新数据
+            CheckCollision(latestGazeDirection, playerPosition, playerRotation);
         }
 
         private bool GetGazeRay(out Vector3 origin, out Vector3 direction)
@@ -134,7 +165,7 @@ namespace ViveSR.anipal.Eye
             eyeOpenRight = right.eye_openness;
         }
 
-        private void CheckCollision(Vector3 direction)
+        private void CheckCollision(Vector3 direction, Vector3 playerPosition, Quaternion playerRotation)
         {
             RaycastHit hit;
             Vector3 worldDir = Camera.main.transform.TransformDirection(direction).normalized;
@@ -150,15 +181,15 @@ namespace ViveSR.anipal.Eye
 
             if (isHit)
             {
-                HandleCollision(hit, timestamp);
+                HandleCollision(hit, timestamp, playerPosition, playerRotation);
             }
             else
             {
-                HandleNoCollision(timestamp);
+                HandleNoCollision(timestamp, playerPosition, playerRotation);
             }
         }
 
-        private void HandleCollision(RaycastHit hit, string timestamp)
+        private void HandleCollision(RaycastHit hit, string timestamp, Vector3 playerPos, Quaternion playerRot)
         {
             Vector3 point = hit.point;
             CollisionPointEvent?.Invoke(point);
@@ -166,20 +197,22 @@ namespace ViveSR.anipal.Eye
             WriteDataLine(
                 timestamp,
                 hit.collider.name,
-                point.x, point.y, point.z
+                point.x, point.y, point.z,
+                playerPos, playerRot
             );
         }
 
-        private void HandleNoCollision(string timestamp)
+        private void HandleNoCollision(string timestamp, Vector3 playerPos, Quaternion playerRot)
         {
             WriteDataLine(
                 timestamp,
                 "无碰撞",
-                float.NaN, float.NaN, float.NaN
+                float.NaN, float.NaN, float.NaN,
+                playerPos, playerRot
             );
         }
 
-        private void WriteDataLine(string time, string name, float x, float y, float z)
+        private void WriteDataLine(string time, string name, float x, float y, float z, Vector3 playerPos, Quaternion playerRot)
         {
             datasetFileWriter.WriteLine(string.Join(",",
                 FormatField(time),
@@ -194,7 +227,14 @@ namespace ViveSR.anipal.Eye
                 FormatNumber(pupilPositionRight.x),
                 FormatNumber(pupilPositionRight.y),
                 FormatNumber(eyeOpenLeft),
-                FormatNumber(eyeOpenRight)
+                FormatNumber(eyeOpenRight),
+                FormatNumber(playerPos.x),
+                FormatNumber(playerPos.y),
+                FormatNumber(playerPos.z),
+                FormatNumber(playerRot.x),
+                FormatNumber(playerRot.y),
+                FormatNumber(playerRot.z),
+                FormatNumber(playerRot.w)
             ));
         }
 
